@@ -29,29 +29,10 @@ Some language files may have incomplete translations or you may suggest a better
 The `en_GB.json` file contains the original complete list of all translations. Copy the contents of this file into the new one that will contain translation for your language. The new file must have an appropriate name for your language in format `xx_XX.json`. Translate all the required strings, then make a call for a merge request to propose your changes into this repository.
 
 ### Translation rules
-Translate only the strings that are on the right side of the semicolon on each line. For example, the original line in `en_GB.json` file contains a string:
-
-``
-"Icon Medium": "Icon Medium"
-``
-
-You should translate only the right part. For example, the German version of this string will be:
-
-``
-"Icon Medium": "Mittleres Symbolbild"
-``
-
-The words that are delimited by `%` character must be copied into the translated text "as is", for example, in the following string:
-
-``
-Posted in %categories%
-`` 
-
-all words must be translated except `%link%` which should be copied as is and placed in the correct position in the translated string. For example, the German translation of the string above will be:
-
-``
-Veröffentlicht in %categories%
-``
+[Read here](https://github.com/rvalitov/widgetkit-language/wiki/Translation-rules).
 
 ### The Transifex
 [Transifex](https://www.transifex.com) is a great tool for translation. However, translating non open-source project (Widgetkit) requires creating a paid project. If someone is willing to contribute by providing a paid Transifex project, then, it would greatly improve the speed, comfort and ease of translation process. After that you may add [me](https://www.transifex.com/user/profile/Limarlav/) into the project as a Manager or Coordinator.
+
+## Disclaimer
+This project is NOT affiliated with, endorsed, or sponsored by the Yootheme. Widgetkit, its name, trademark, and other aspects of the app are trademarked and owned by their respective owners.

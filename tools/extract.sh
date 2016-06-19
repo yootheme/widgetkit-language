@@ -35,16 +35,16 @@ FILESLIST=`find $S_INPUT -type f -name "*.php"`
 while read -r phpfile; do
 	#Analyze each PHP file
 	#First scan is for standard {{ 'ABC' |trans}} strings
-	LIST=`$S_GREP -E -o "\{\{[^}]+trans\s*\}\}" $phpfile | $S_SED -r "s/\\s*\\\\\?'\\s*\\|\\s*trans\\s*\\}\\}\\s*$//" | $S_SED -r "s/^\\s*\\{\\{\\s*\\\\\?'\\s*//"`
+	LIST=`$S_GREP -E -o "\{\{[^}]+trans\s*\}\}" $phpfile | $S_SED -r "s/\\s*\\\\\?'\\s*\\|\\s*trans\\s*\\}\\}\\s*$//" | $S_SED -r "s/^\\s*\\{\\{\\s*\\\\\?'\\s*//" | $S_SED -e "s/\\\\\\'/'/g"`
 	STRINGLIST=`echo -e "$STRINGLIST"; echo -e "$LIST"`
 	
 	#Second scan is for PHP invoked calls like $app['translator']->trans('ABC')
-	LIST=`$S_GREP -P -o "\\->trans\\(\\s*'((?!('\\)|('\\s*,))).)*'(\\)|\\s*,)" $phpfile | $S_SED -r "s/^\\s*->trans\(\\s*'//" | $S_SED -r "s/'\\s*(,|\\))?\\s*$//"`
+	LIST=`$S_GREP -P -o "\\->trans\\(\\s*'((?!('\\)|('\\s*,))).)*'(\\)|\\s*,)" $phpfile | $S_SED -r "s/^\\s*->trans\(\\s*'//" | $S_SED -r "s/'\\s*(,|\\))?\\s*$//" | $S_SED -e "s/\\\\\\'/'/g"`
 	STRINGLIST=`echo -e "$STRINGLIST"; echo -e "$LIST"`
 done <<< "$FILESLIST"
 
-#Removing duplicate lines and sorting in alphabetical order, removing empty lines:
-STRINGLIST=`echo -e -n "$STRINGLIST" | $S_SED -e '/^\s*$/d' | sort -u`
+#Removing duplicate lines and sorting in alphabetical order, removing empty lines, escaping symbols for JSON:
+STRINGLIST=`echo -e -n "$STRINGLIST" | $S_SED -e '/^\s*$/d' | $S_SED -e 's/"/\\\\"/g' | sort -u`
 
 pos=0;
 echo "{" > $S_OUTPUT
